@@ -1,6 +1,6 @@
 -- Scott Thomas
--- Modified: 10/10/2019
--- Week 3 Project
+-- Modified: 10/18/2019
+-- Week 4 Project
 
 -- START OF DATABASE CREATE SECTION
 USE master;
@@ -521,6 +521,28 @@ VALUES
 ('Elsie', 'Chapman', 1);
 GO
 
+-- Add Group Artists
+
+INSERT INTO [Artist]
+([Artist_FName], [Artist_Type])
+VALUES
+('The Rolling Stones', 0);
+GO
+
+INSERT INTO [Artist]
+([Artist_FName], [Artist_Type])
+VALUES
+('Red Hot Chili Peppers', 0);
+GO
+
+INSERT INTO [Artist]
+([Artist_FName], [Artist_Type])
+VALUES
+('Arctic Monkeys', 0);
+GO
+
+-- 
+
 -- Add disks
 -- c.1
 
@@ -557,7 +579,7 @@ GO
 INSERT INTO [Disk]
 ([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
 VALUES
-('FROM insult to injury', '6/26/2000', 1, 1, 1);
+('from insult to injury', '6/26/2000', 1, 1, 1);
 GO
 
 INSERT INTO [Disk]
@@ -648,6 +670,18 @@ INSERT INTO [Disk]
 ([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
 VALUES
 ('Bursting bubbles', '6/13/2000', 1, 1, 2);
+GO
+
+INSERT INTO [Disk]
+([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
+VALUES
+('Vital Hound', '7/13/2000', 1, 1, 2);
+GO
+
+INSERT INTO [Disk]
+([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
+VALUES
+('Corroded Pit', '7/13/2000', 1, 2, 2);
 GO
 
 
@@ -797,6 +831,18 @@ VALUES
 (10, 14);
 GO
 
+INSERT INTO [Disk_Artists]
+([Artist_ID], [Disk_ID])
+VALUES
+(22, 20);
+GO
+
+INSERT INTO [Disk_Artists]
+([Artist_ID], [Disk_ID])
+VALUES
+(23, 22);
+GO
+
 -- f.1
 -- Add borrow history
 
@@ -944,6 +990,133 @@ FROM DiskHasBorrower
 where Returned_Date is null;
 GO
 
+
+-- 3.
+
+-- select the disk name, release date, and artist name from the disk table
+-- link the disk id's to the id's in disk_artist
+-- link the artists from disk_artists to the artists in the artist table
+select
+	[Disk].[Name] as 'Disk Name',
+	convert(varchar(10), [disk].[ReleaseDate], 101) as 'Release Date',
+	[Artist].[Artist_FName] as 'Artist First Name',
+	[Artist].[Artist_LName] as 'Artist Last Name'
+from [Disk]
+inner join Disk_Artists on [disk].[Disk_ID] = Disk_Artists.Disk_ID
+inner join Artist on Disk_Artists.Artist_ID = Artist.Artist_ID
+-- check if the artist id exists inside a subquery
+-- the sub query grabs the artist id from the disk_artists table
+-- due to how subqueries work the artist id is then grouped
+-- the results are then filtered by the number of instances of an individual artist id.
+where [Disk_Artists].[Artist_ID] in
+(
+	select [Disk_Artists].[Artist_ID]
+	from [Disk_Artists]
+	group by [Disk_Artists].[Artist_ID]
+	having COUNT([Artist_ID]) = 1
+)
+order by [artist].[Artist_LName], [Artist].[Artist_FName], [Disk].[Name];
+
+go
+
+-- 4.
+-- drop the view if it's already been created
+drop view if exists View_Individual_Artist;
+go
+
+-- creates a view with the artist id and name stored inside.
+-- only stores individual artists and not group artists
+create view View_Individual_Artist as
+	select Artist_ID, Artist_FName, Artist_LName
+	from Artist
+	where Artist_Type = 1;
+go
+
+-- 4a?
+-- "Include the artist id in the view definition but do not display the id in your output."
+-- I'm assuming that this means display the newly created view without artist id displayed.
+
+select
+	Artist_FName as FirstName,
+	Artist_LName as LastName
+from View_Individual_Artist;
+go
+
+-- 5.
+-- select the disk name, release date, and group name from the disk table
+-- format the release date to client specs
+-- link the disk_artits and artists tables together
+-- only grab the artists that aren't inside the solo artist view (groups)
+select
+	[Disk].[Name] as 'Disk Name',
+	convert(varchar(10), [disk].ReleaseDate, 101) as 'Release Date',
+	Artist.Artist_FName as 'Group Name'
+from Disk
+inner join Disk_Artists on [disk].[Disk_ID] = Disk_Artists.Disk_ID
+inner join Artist on Disk_Artists.Artist_ID = Artist.Artist_ID
+where Disk_Artists.Artist_ID not in
+(
+	select Artist_ID
+	from View_Individual_Artist
+)
+order by Artist.Artist_FName, [Disk].[Name];
+
+go
+
+-- 6.
+-- grab the borrowers first and last name, the dist that they borrowed and the dates that they were borrowed/returned.
+-- format the dates to the clients specs
+-- connect the tables together on the borrower and disk id's
+-- sort them by name then date.
+select
+	Borrower.Borrower_FName as 'First',
+	Borrower.Borrower_LName as 'Last',
+	[Disk].[Name] as 'Disk Name',
+	Convert(date, DiskHasBorrower.Borrowed_Date)
+		as 'Borrowed Date',
+	Convert(date, DiskHasBorrower.Returned_Date)
+		as 'Returned Date'
+from disk
+inner join DiskHasBorrower on [Disk].[Disk_ID] = DiskHasBorrower.Disk_ID
+inner join Borrower on DiskHasBorrower.Borrower_ID = Borrower.Borrower_ID
+order by 'Last', 'First', 'Disk Name', 'Borrowed Date', 'Returned Date';
+go
+
+-- 7.
+-- get the disk id and name, and a count of the number of instances inside the DiskHasBorrower table
+-- join them where the disk id exists inside the DiskHasBorrower
+-- 		note: doesn't show disks that haven't been borrowed
+-- group the non-aggregate columns together and order by the id
+select
+	[disk].[Disk_ID] as 'DiskId',
+	[Disk].[Name] as 'Disk Name',
+	count(DiskHasBorrower.Disk_ID) as 'Times Borrowed'
+from Disk
+inner join DiskHasBorrower on DiskHasBorrower.Disk_ID = [disk].[Disk_ID]
+group by [disk].[Disk_ID], [Disk].[Name]
+order by 'DiskId';
+go
+
+-- 8.
+-- grab the disk name and the dates borrowed along with the last name of the person who borrowed them.
+-- format them to client specs
+-- join the tables on the disk ids and the borrower ids
+-- filter out any rows that have a return date
+-- order by the name of the disk
+select
+	[Disk].[Name] as 'Disk Name',
+	Convert(date, DiskHasBorrower.Borrowed_Date)
+		as 'Borrowed',
+	Convert(date, DiskHasBorrower.Returned_Date)
+		as 'Returned',
+	Borrower.Borrower_LName as 'Last Name'
+from Disk
+inner join DiskHasBorrower on DiskHasBorrower.Disk_ID = [disk].[Disk_ID]
+inner join Borrower on Borrower.Borrower_ID = DiskHasBorrower.Borrower_ID
+where DiskHasBorrower.Returned_Date is null
+order by 'Disk Name'
+go
+
 -- tests
 /* 
 -- Insert at least 20 rows of data into the disk table
@@ -1042,4 +1215,4 @@ GROUP BY [Artist_ID]
 ORDER BY 'Artist_ID Count' DESC;
 GO
 
- */
+*/
