@@ -1,7 +1,8 @@
 -- Scott Thomas
 -- Modified: 10/18/2019
--- Week 4 Project
-
+-- Week 5 Project
+-- 10/23/2019 - added procedures to insert/delete/update for tables disk/borrower/artist. Along with test cases for the new procs
+-- replaced disk instert statements with sp_insDisk prc
 -- START OF DATABASE CREATE SECTION
 USE master;
 GO
@@ -137,6 +138,219 @@ CREATE TABLE [DiskHasBorrower]
 	PRIMARY KEY ([Checkout_ID])
 );
 GO
+
+
+-- insert artist proc
+DROP PROC IF EXISTS sp_InsArtist;
+GO
+
+Create Proc sp_InsArtist
+	@fname varchar(100),
+	@artistType int,
+	@lname varchar(100) = null
+AS
+	BEGIN TRY
+		insert into Artist
+		(Artist_FName, Artist_LName, Artist_Type)
+		VALUES
+		(@fname, @lname, @artistType);
+		return @@identity;
+END TRY
+BEGIN CATCH
+	print 'an error occurred while calling sp_InsArtist';
+	print 'ERROR NUMBER: ' + convert(varchar(512), ERROR_NUMBER());
+	print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
+END CATCH
+GO
+--
+
+-- update artist  proc
+DROP PROC IF EXISTS sp_UpdateArtist;
+GO
+
+CREATE PROC sp_UpdateArtist
+	@artistID int,
+	@fname varchar(100),
+	@artistType int,
+	@lname varchar(100) = null
+AS
+BEGIN TRY
+	UPDATE Artist
+	SET Artist_FName = @fname,
+		Artist_LName = @lname,
+		Artist_Type = @artistType
+	WHERE Artist_ID = @artistID;
+END TRY
+BEGIN CATCH
+	print 'an error occurred while calling sp_UpdateArtist';
+	print 'ERROR NUMBER: ' + convert(varchar(512), ERROR_NUMBER());
+	print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
+END CATCH
+GO
+--
+
+-- delete artist  proc
+DROP PROC IF EXISTS sp_DeleteArtist;
+GO
+
+Create Proc sp_DeleteArtist
+	@artistID int
+AS
+	BEGIN TRY
+		delete from Artist
+		WHERE Artist_ID = @artistID;
+END TRY
+BEGIN CATCH
+	print 'an error occurred while calling sp_DeleteArtist';
+	print 'ERROR NUMBER: ' + convert(varchar(512), ERROR_NUMBER());
+	print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
+END CATCH
+GO
+--
+
+
+-- insert borrower proc
+DROP PROC IF EXISTS sp_InsBorrower;
+GO
+
+Create Proc sp_InsBorrower
+	@fname varchar(50),
+	@lname varchar(50),
+	@number varchar(50)
+AS
+	BEGIN TRY
+		insert into Borrower
+		(Borrower_FName, Borrower_LName, Borrower_Number)
+		VALUES
+		(@fname, @lname, @number);
+		RETURN @@IDENTITY;
+END TRY
+BEGIN CATCH
+	print 'an error occurred while calling sp_InsBorrower';
+	print 'ERROR NUMBER: ' + convert(varchar(512), ERROR_NUMBER());
+	print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
+END CATCH
+GO
+--
+
+-- update borrower proc
+DROP PROC IF EXISTS sp_UpdateBorrower;
+GO
+
+Create Proc sp_UpdateBorrower
+	@borrowerID int,
+	@fname varchar(50),
+	@number varchar(50),
+	@lname varchar(50)
+AS
+BEGIN TRY
+	update Borrower
+	SET Borrower_FName = @fname,
+		Borrower_LName = @lname,
+		Borrower_Number = @number
+	WHERE Borrower_ID = @borrowerID;
+END TRY
+BEGIN CATCH
+	print 'an error occurred while calling sp_UpdateBorrower';
+	print 'ERROR NUMBER: ' + convert(varchar(512), ERROR_NUMBER());
+	print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
+END CATCH
+GO
+--
+
+-- delete borrower proc
+DROP PROC IF EXISTS sp_DeleteBorrower;
+GO
+
+Create Proc sp_DeleteBorrower
+	@borrowerID int
+AS
+	BEGIN TRY
+		delete from Borrower
+		WHERE Borrower_ID = @borrowerID;
+END TRY
+BEGIN CATCH
+	print 'an error occurred while calling sp_DeleteArtist';
+	print 'ERROR NUMBER: ' + convert(varchar(512), ERROR_NUMBER());
+	print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
+END CATCH
+GO
+--
+
+
+-- insert disk proc
+DROP PROC IF EXISTS sp_InsDisk;
+GO
+
+Create Proc sp_InsDisk
+	@fname varchar(50),
+	@releaseDate datetime2,
+	@type int,
+	@genre int,
+	@status int
+AS
+	BEGIN TRY
+		insert into [Disk]
+		([Name], ReleaseDate, [Type_ID], Genre_ID, Status_ID)
+		VALUES
+		(@fname, @releaseDate, @type, @genre, @status);
+		RETURN @@IDENTITY;
+END TRY
+BEGIN CATCH
+	print 'an error occurred while calling sp_InsDisk';
+	print 'ERROR NUMBER: ' + convert(varchar(512), ERROR_NUMBER());
+	print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
+END CATCH
+GO
+--
+
+-- update Disk proc
+DROP PROC IF EXISTS sp_UpdateDisk;
+GO
+
+Create Proc sp_UpdateDisk
+	@diskID int,
+	@fname varchar(50),
+	@releaseDate datetime2,
+	@type int,
+	@genre int,
+	@status int
+AS
+BEGIN TRY
+	update [Disk]
+	SET [Name] = @fname,
+		ReleaseDate = @releaseDate,
+		[Type_ID] = @type,
+		Genre_ID = @genre,
+		Status_ID =	@status
+	WHERE Disk_ID = @diskID;
+END TRY
+BEGIN CATCH
+	print 'an error occurred while calling sp_UpdateDisk';
+	print 'ERROR NUMBER: ' + convert(varchar(512), ERROR_NUMBER());
+	print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
+END CATCH
+GO
+--
+
+-- delete Disk proc
+DROP PROC IF EXISTS sp_DeleteDisk;
+GO
+
+Create Proc sp_DeleteDisk
+	@diskID int
+AS
+	BEGIN TRY
+		delete from Disk
+		WHERE Disk_ID = @diskID;
+	END TRY
+	BEGIN CATCH
+		print 'an error occurred while calling sp_DeleteArtist';
+		print 'ERROR NUMBER: ' + convert(varchar(512), ERROR_NUMBER());
+		print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
+	END CATCH
+GO
+--
 
 -- Create the foreign keys for Disk_Artists
 ALTER TABLE [Disk_Artists]
@@ -546,142 +760,96 @@ GO
 -- Add disks
 -- c.1
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Ghost stories', '3/5/2000', 1, 2, 2);
+exec sp_InsDisk
+'Ghost stories', '3/5/2000', 1, 2, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Eye of the camera', '6/27/2000', 1, 3, 1);
+exec sp_InsDisk
+'Eye of the camera', '6/27/2000', 1, 3, 1;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Bankrupcy', '7/25/2000', 1, 2, 1);
+exec sp_InsDisk
+'Bankrupcy', '7/25/2000', 1, 2, 1;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Cat eat cat world', '1/8/2000', 1, 2, 2);
+exec sp_InsDisk
+'Cat eat cat world', '1/8/2000', 1, 2, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Down in flames', '9/18/2000', 1, 2, 2);
+exec sp_InsDisk
+'Down in flames', '9/18/2000', 1, 2, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('from insult to injury', '6/26/2000', 1, 1, 1);
+exec sp_InsDisk
+'from insult to injury', '6/26/2000', 1, 1, 1;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('No discounts', '2/19/2000', 1, 2, 2);
+exec sp_InsDisk
+'No discounts', '2/19/2000', 1, 2, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Broken ice', '10/19/2000', 1, 1, 2);
+exec sp_InsDisk
+'Broken ice', '10/19/2000', 1, 1, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Curtain fall', '1/22/2000', 1, 2, 2);
+exec sp_InsDisk
+'Curtain fall', '1/22/2000', 1, 2, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Favoritism', '5/23/2000', 1, 2, 2);
+exec sp_InsDisk
+'Favoritism', '5/23/2000', 1, 2, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Basket case', '8/24/2000', 1, 3, 2);
+exec sp_InsDisk
+'Basket case', '8/24/2000', 1, 3, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Around the bush', '6/5/2000', 1, 2, 2);
+exec sp_InsDisk
+'Around the bush', '6/5/2000', 1, 2, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Bag of mysteries', '6/12/2000', 1, 3, 1);
+exec sp_InsDisk
+'Bag of mysteries', '6/12/2000', 1, 3, 1;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Bursting out of my skin', '1/8/2000', 1, 3, 1);
+exec sp_InsDisk
+'Bursting out of my skin', '1/8/2000', 1, 3, 1;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Final breath', '2/22/2000', 1, 1, 2);
+exec sp_InsDisk
+'Final breath', '2/22/2000', 1, 1, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Rocket surgery', '8/18/2000', 1, 1, 2);
+exec sp_InsDisk
+'Rocket surgery', '8/18/2000', 1, 1, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Total destruction', '12/20/2000', 1, 1, 2);
+exec sp_InsDisk
+'Total destruction', '12/20/2000', 1, 1, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Army of ants', '1/16/2000', 1, 2, 1);
+exec sp_InsDisk
+'Army of ants', '1/16/2000', 1, 2, 1;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('No celebration', '12/13/2000', 1, 3, 2);
+exec sp_InsDisk
+'No celebration', '12/13/2000', 1, 3, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Pushing up daisies', '8/11/2000', 1, 2, 2);
+exec sp_InsDisk
+'Pushing up daisies', '8/11/2000', 1, 2, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Bursting bubbles', '6/13/2000', 1, 1, 2);
+exec sp_InsDisk
+'Bursting bubbles', '6/13/2000', 1, 1, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Vital Hound', '7/13/2000', 1, 1, 2);
+exec sp_InsDisk
+'Vital Hound', '7/13/2000', 1, 1, 2;
 GO
 
-INSERT INTO [Disk]
-([Name], [ReleaseDate], [Type_ID], [Genre_ID], [Status_ID])
-VALUES
-('Corroded Pit', '7/13/2000', 1, 2, 2);
+exec sp_InsDisk
+'Corroded Pit', '7/13/2000', 1, 2, 2;
 GO
 
 
@@ -1116,6 +1284,30 @@ inner join Borrower on Borrower.Borrower_ID = DiskHasBorrower.Borrower_ID
 where DiskHasBorrower.Returned_Date is null
 order by 'Disk Name'
 go
+
+
+
+-- test borrower procs
+declare @ident int;
+exec @ident = sp_InsBorrower 'sheriff', '2085551234', 'marshall';
+exec sp_UpdateBorrower @ident, 'marshal', '2085551234', 'sheriff';
+exec sp_DeleteBorrower @ident;
+GO
+--
+-- test artist procs
+declare @ident int;
+exec @ident = sp_InsArtist 'brunoooooo', 1, 'marsssssss';
+exec sp_UpdateArtist @ident, 'bruno', 1, 'mars';
+exec sp_DeleteArtist @ident;
+GO
+--
+-- test disk procs
+declare @ident int;
+exec @ident = sp_InsDisk '5000 hours of rain', '01/01/2000', 1, 1, 1;
+exec sp_UpdateDisk @ident, '10,000 hours of rain', '01/01/2000', 1, 1, 2;
+exec sp_DeleteDisk @ident;
+GO
+--
 
 -- tests
 /* 
