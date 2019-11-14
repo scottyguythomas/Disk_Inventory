@@ -55,10 +55,14 @@
     </nav>
     <div class="col-md-8 col-md-offset-2">
          <br />
-    <br />
+		<form runat="server">
+
+    <asp:ContentPlaceHolder ID="TablePlaceHolder" runat="server">
+        </asp:ContentPlaceHolder>
     <br />
         <asp:ContentPlaceHolder ID="BodyPlaceholder" runat="server">
         </asp:ContentPlaceHolder>
+		</form>
     </div>
 
 

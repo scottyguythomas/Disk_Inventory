@@ -7,20 +7,27 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace week2project
-{
-
-
-	public partial class Site1
-	{
-
-		/// <summary>
-		/// BodyPlaceholder control.
-		/// </summary>
-		/// <remarks>
-		/// Auto-generated field.
-		/// To modify move field declaration from designer file to code-behind file.
-		/// </remarks>
-		protected global::System.Web.UI.WebControls.ContentPlaceHolder BodyPlaceholder;
-	}
+namespace week2project {
+    
+    
+    public partial class Site1 {
+        
+        /// <summary>
+        /// TablePlaceHolder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder TablePlaceHolder;
+        
+        /// <summary>
+        /// BodyPlaceholder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder BodyPlaceholder;
+    }
 }
