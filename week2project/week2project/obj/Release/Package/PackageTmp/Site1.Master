@@ -1,5 +1,9 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="week2project.Site1" %>
-
+<%--	Scott Thomas
+		11/15/2019
+		Changed sizing to <div class="col-md-8 col-md-offset-2">
+		Removed Jumbotron from background image
+	--%>
 <!DOCTYPE html>
 
 <html>
@@ -18,12 +22,14 @@
     <style>
         #BackgroundDiv {
             position: fixed;
+			height:100%;
+			width:100%;
         }
     </style>
 </head>
 
 <body>
-    <img class="jumbotron" id="BackgroundDiv" src="Images/camera.jpg" />
+    <img class="" id="BackgroundDiv" src="Images/camera.jpg" />
 
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">

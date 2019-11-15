@@ -1,5 +1,9 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="week2project.Default" MasterPageFile="~/Site1.Master" %>
-
+<%--	Scott Thomas
+		11/15/2019
+		Connected Disk Page to Database,
+		Insert, Update, Delete Added
+	--%>
 <asp:Content runat="server" ContentPlaceHolderID="BodyPlaceholder">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
