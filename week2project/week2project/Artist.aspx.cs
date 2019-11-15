@@ -10,8 +10,8 @@ namespace week2project
     public partial class Artist : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
+		{
 
-        }
+		}
     }
 }

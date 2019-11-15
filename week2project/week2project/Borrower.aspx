@@ -1,5 +1,9 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Borrower.aspx.cs" MasterPageFile="~/Site1.Master" Inherits="week2project.Borrower" %>
-
+<%--	Scott Thomas
+		11/15/2019
+		Connected Borrower Page to Database,
+		Insert, Update, Delete Added
+	--%>
 <asp:Content runat="server" ContentPlaceHolderID="TablePlaceHolder">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
