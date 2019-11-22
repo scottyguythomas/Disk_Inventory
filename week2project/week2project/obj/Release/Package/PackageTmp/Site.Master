@@ -1,5 +1,16 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="week2project.SiteMaster" %>
 
+<%--
+	Scott Thomas
+	11/22/2019
+	Added login and register buttons for anon. users
+	Hid moderator pages from anon. users
+	added logout page for registered users
+	
+
+	Changed paths to run from the root of the directory
+	--%>
+
 <!DOCTYPE html>
 
 <html>
@@ -36,7 +47,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a runat="server"  class="navbar-brand" href="~/Default.aspx">Scott's Floppy Disks</a>
+					<a runat="server" class="navbar-brand" href="~/Default.aspx">Scott's Floppy Disks</a>
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<asp:LoginView runat="server" ViewStateMode="Disabled">
@@ -50,7 +61,7 @@
 						<LoggedInTemplate>
 							<ul class="nav navbar-nav">
 								<li>
-									<a runat="server" href="~/LoggedIn/Default.aspx">Home</a>
+									<a runat="server" href="~/Default.aspx">Home</a>
 								</li>
 								<li>
 									<a runat="server" href="~/LoggedIn/Artist.aspx">Artists</a>

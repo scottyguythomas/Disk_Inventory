@@ -1,8 +1,11 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Disk.aspx.cs" Inherits="week2project.Default" MasterPageFile="~/Site.Master" %>
 <%--	Scott Thomas
-		11/15/2019
+		11/22/2019
 		Connected Disk Page to Database,
 		Insert, Update, Delete Added
+
+
+		Moved files to LoggedIn Folder, thus limiting access to moderator pages through the LoggedIn folders web.config
 	--%>
 <asp:Content runat="server" ContentPlaceHolderID="BodyPlaceholder">
 	<div class="panel panel-primary">
@@ -238,7 +241,7 @@
 
 
 
-			<asp:SqlDataSource ID="SqlDataSource1" runat="server"
+			<asp:SqlDataSource ID="MyDataSource" runat="server"
 				ConnectionString="<%$ ConnectionStrings:disk_inventoryRTConnectionString %>"
 				DeleteCommand="execute sp_DeleteDisk @Disk_ID"
 				InsertCommand="execute sp_InsDisk @Name, @ReleaseDate, @Type_ID, @Genre_ID, @Status_ID"

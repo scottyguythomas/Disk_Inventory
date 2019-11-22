@@ -1,5 +1,12 @@
 ﻿<%@ Page Title="Log in" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="week2project.Account.Login" Async="true" %>
 
+<%-- 
+		Scott Thomas
+		11/22/2019
+		Modified layout to match current design
+	
+	--%>
+
 <%@ Register Src="~/Account/OpenAuthProviders.ascx" TagPrefix="uc" TagName="OpenAuthProviders" %>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="BodyPlaceholder">

@@ -10,7 +10,7 @@
 namespace week2project {
     
     
-    public partial class Artist {
+    public partial class Default {
         
         /// <summary>
         /// ValidationSummary2 control.

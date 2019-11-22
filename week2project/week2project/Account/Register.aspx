@@ -1,5 +1,12 @@
 ﻿<%@ Page Title="Register" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="week2project.Account.Register" %>
 
+<%-- 
+		Scott Thomas
+		11/22/2019
+		Modified layout to match current design
+
+	--%>
+
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="BodyPlaceholder">
 	<div class="panel panel-primary">
 		<div class="panel-heading">

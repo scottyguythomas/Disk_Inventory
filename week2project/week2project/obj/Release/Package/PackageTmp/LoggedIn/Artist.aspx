@@ -1,8 +1,10 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Artist.aspx.cs" Inherits="week2project.Default" MasterPageFile="~/Site.Master" %>
 <%--	Scott Thomas
-		11/15/2019
+		11/22/2019
 		Connected Artist Page to Database,
 		Insert, Update, Delete Added
+
+		Moved files to LoggedIn Folder, thus limiting access to moderator pages through the LoggedIn folders web.config
 	--%>
 <asp:Content runat="server" ContentPlaceHolderID="BodyPlaceholder">
 	<div class="panel panel-primary">
@@ -12,7 +14,7 @@
 		<div class="panel-body">
 			<asp:ValidationSummary CssClass="center-block text-center text-danger" ValidationGroup="Edit" ID="ValidationSummary2" runat="server" DisplayMode="List" />
 			<asp:ValidationSummary CssClass="center-block text-center text-danger" ValidationGroup="Insert" ID="ValidationSummary1" runat="server" DisplayMode="List" />
-			<asp:ListView ID="ListView1" runat="server" DataKeyNames="Artist_ID" DataSourceID="SqlDataSource1" GroupItemCount="4" InsertItemPosition="LastItem" OnSelectedIndexChanged="ListView1_SelectedIndexChanged">
+			<asp:ListView ID="ListView1" runat="server" DataKeyNames="Artist_ID" DataSourceID="SqlDataSource1" GroupItemCount="4" InsertItemPosition="LastItem" >
 				<EditItemTemplate>
 					<td runat="server" style="">
 						<div class="panel panel-primary center-block text-center" style="margin: 20px">

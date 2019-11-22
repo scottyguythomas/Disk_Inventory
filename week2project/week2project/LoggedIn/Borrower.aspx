@@ -1,8 +1,10 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Borrower.aspx.cs" MasterPageFile="~/Site.Master" Inherits="week2project.Borrower" %>
 <%--	Scott Thomas
-		11/15/2019
+		11/22/2019
 		Connected Borrower Page to Database,
 		Insert, Update, Delete Added
+
+		Moved files to LoggedIn Folder, thus limiting access to moderator pages through the LoggedIn folders web.config
 	--%>
 <asp:Content runat="server" ContentPlaceHolderID="TablePlaceHolder">
 	<div class="panel panel-primary">
