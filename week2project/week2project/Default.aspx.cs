@@ -13,15 +13,5 @@ namespace week2project
 		{
 
 		}
-
-		protected void ListView1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		//protected void UpdateButton_Click(object sender, EventArgs e)
-		//{
-		//	if()
-		//}
 	}
 }

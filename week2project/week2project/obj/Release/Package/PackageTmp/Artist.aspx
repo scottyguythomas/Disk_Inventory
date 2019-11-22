@@ -34,7 +34,7 @@
 								<br />
 								<asp:TextBox ID="Artist_LNameTextBox" ValidationGroup="Edit" runat="server" Text='<%# Bind("Artist_LName") %>' />
 								<br />
-								Is Group:
+								Is Artist Group:
 								<br />
 								<asp:TextBox ID="Artist_TypeTextBox" ValidationGroup="Edit" runat="server" Text='<%# Bind("Artist_Type") %>' />
 								<br />
@@ -46,9 +46,9 @@
 								<asp:RequiredFieldValidator ID="RequiredFieldValidator1" ValidationGroup="Edit" runat="server" ErrorMessage="First Name Is A Required Field" Display="None" ControlToValidate="Artist_FNameTextBox"></asp:RequiredFieldValidator>
 
 
-								<asp:RequiredFieldValidator ID="RequiredFieldValidator2" ValidationGroup="Edit" runat="server" ErrorMessage="Is Group Is A Required Field" ControlToValidate="Artist_TypeTextBox">
+								<asp:RequiredFieldValidator ID="RequiredFieldValidator2" ValidationGroup="Edit" runat="server" ErrorMessage="Is Artist Group Is A Required Field" ControlToValidate="Artist_TypeTextBox">
 
-									<asp:RangeValidator ID="RangeValidator1" runat="server" ErrorMessage="Is Group Must Be Either O(Solo) or 1(Group)" ControlToValidate="Artist_TypeTextBox" MaximumValue="1" MinimumValue="0" ValidationGroup="Edit" Type="Integer"></asp:RangeValidator>
+									<asp:RangeValidator ID="RangeValidator1" runat="server" ErrorMessage="Is Artist Group Must Be Either O(Solo) or 1(Group)" ControlToValidate="Artist_TypeTextBox" MaximumValue="1" MinimumValue="0" ValidationGroup="Edit" Type="Integer"></asp:RangeValidator>
 
 								</asp:RequiredFieldValidator>
 							</div>
@@ -91,14 +91,14 @@
 							<asp:TextBox ID="Artist_LNameTextBox" runat="server" ValidationGroup="Insert" Text='<%# Bind("Artist_LName") %>' />
 							<br />
 							<label>
-								Is Group:
+								Is Artist Group:
 							</label>
 							<asp:TextBox ID="Artist_TypeTextBox" runat="server" ValidationGroup="Insert" Text='<%# Bind("Artist_Type") %>' />
 							<br />
 							<asp:Button ID="InsertButton" ValidationGroup="Insert" runat="server" CommandName="Insert" Text="Insert" />
 							<asp:Button ID="CancelButton" ValidationGroup="Insert" runat="server" CommandName="Cancel" Text="Clear" CausesValidation="false" />
 							<asp:RequiredFieldValidator ValidationGroup="Insert" ID="RequiredFieldValidator3" runat="server" ErrorMessage="First Name Is A Required Field" Display="None" ControlToValidate="Artist_FNameTextBox"></asp:RequiredFieldValidator>
-							<asp:RequiredFieldValidator ID="RequiredFieldValidator4" ValidationGroup="Insert" ControlToValidate="Artist_TypeTextBox" runat="server" ErrorMessage="Is Group Is A Required Field">
+							<asp:RequiredFieldValidator ID="RequiredFieldValidator4" ValidationGroup="Insert" ControlToValidate="Artist_TypeTextBox" runat="server" ErrorMessage="Is Artist Group Is A Required Field">
 
 								<asp:RangeValidator ID="RangeValidator2" runat="server" ValidationGroup="Insert" ControlToValidate="Artist_TypeTextBox" ErrorMessage="RangeValidator" Type="Integer" MaximumValue="1" MinimumValue="0" Display="None">
 
@@ -119,7 +119,7 @@
 								</h3>
 							</div>
 							<div class="panel-body">
-								Is Group:
+								Is Artist Group:
 						<asp:Label ID="Artist_TypeLabel" runat="server" Text='<%# Eval("Artist_Type") %>' />
 								<br />
 								<asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete" />

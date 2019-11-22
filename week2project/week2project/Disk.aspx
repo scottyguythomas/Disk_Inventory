@@ -15,7 +15,7 @@
 			<asp:ValidationSummary ValidationGroup="Insert" CssClass="center-block text-center text-danger" ID="ValidationSummary1" runat="server" DisplayMode="List" />
 
 			<asp:ListView ID="ListView1" runat="server" DataKeyNames="Disk_ID" DataSourceID="SqlDataSource1"
-				GroupItemCount="3" InsertItemPosition="LastItem">
+				GroupItemCount="4" InsertItemPosition="LastItem">
 				<EditItemTemplate>
 					<td runat="server" style="">
 						<div class="panel panel-primary" style="margin: 20px">
@@ -40,7 +40,7 @@
 								</label>
 								<br />
 
-								<asp:TextBox ID="ReleaseDateTextBox" ValidationGroup="Edit" runat="server" Text='<%# Bind("ReleaseDate") %>' />
+								<asp:TextBox ID="ReleaseDateTextBox" ValidationGroup="Edit" runat="server" Text='<%# Bind("ReleaseDate",  "{0:MM/dd/yyyy}") %>' />
 								<br />
 								<label>
 									Genre:
@@ -126,7 +126,7 @@
 							<label>
 								Release Date:
 							</label>
-							<asp:TextBox ID="ReleaseDateTextBox" ValidationGroup="Insert" runat="server" Text='<%# Bind("ReleaseDate") %>' />
+							<asp:TextBox ID="ReleaseDateTextBox" ValidationGroup="Insert" runat="server" Text='<%# Bind("ReleaseDate", "{0:MM/dd/yyyy}") %>' />
 							<br />
 							<label>
 								Genre:
@@ -185,7 +185,8 @@
 									Release Date:
 								</label>
 
-								<asp:Label ID="ReleaseDateLabel" runat="server" Text='<%# Eval("ReleaseDate") %>' />
+								<asp:Label ID="ReleaseDateLabel" runat="server" Text='<%# Eval("ReleaseDate", "{0:MM/dd/yyyy}") %>' />
+								<br />
 								<label>
 									Genre:
 								</label>
