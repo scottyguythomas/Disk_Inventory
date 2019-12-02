@@ -40,15 +40,6 @@ GO
 DROP TABLE IF EXISTS [Status];
 GO
 
--- Create a Table to hold the disks current status
-CREATE TABLE [Status]
-(
-	[Status_ID] int NOT NULL IDENTITY,
-	[Description] varchar(50) NOT NULL,
-	PRIMARY KEY ([Status_ID])
-);
-GO
-
 -- Drop the Type table if it exists
 DROP TABLE IF EXISTS [Type];
 GO
@@ -117,7 +108,6 @@ CREATE TABLE [Disk]
 	[ReleaseDate] datetime2 NOT NULL,
 	[Type_ID] int NOT NULL,
 	[Genre_ID] int NOT NULL,
-	[Status_ID] int NOT NULL,
 	PRIMARY KEY ([Disk_ID])
 );
 GO
@@ -286,14 +276,13 @@ Create Proc sp_InsDisk
 	@fname varchar(50),
 	@releaseDate datetime2,
 	@type int,
-	@genre int,
-	@status int
+	@genre int
 AS
 	BEGIN TRY
 		insert into [Disk]
-		([Name], ReleaseDate, [Type_ID], Genre_ID, Status_ID)
+		([Name], ReleaseDate, [Type_ID], Genre_ID)
 		VALUES
-		(@fname, @releaseDate, @type, @genre, @status);
+		(@fname, @releaseDate, @type, @genre);
 		RETURN @@IDENTITY;
 END TRY
 BEGIN CATCH
@@ -313,16 +302,14 @@ Create Proc sp_UpdateDisk
 	@fname varchar(50),
 	@releaseDate datetime2,
 	@type int,
-	@genre int,
-	@status int
+	@genre int
 AS
 BEGIN TRY
 	update [Disk]
 	SET [Name] = @fname,
 		ReleaseDate = @releaseDate,
 		[Type_ID] = @type,
-		Genre_ID = @genre,
-		Status_ID =	@status
+		Genre_ID = @genre
 	WHERE Disk_ID = @diskID;
 END TRY
 BEGIN CATCH
@@ -385,10 +372,6 @@ ALTER TABLE [Disk]
 	REFERENCES [Genre] ([Genre_ID]);
 GO
 
-ALTER TABLE [Disk]
-	ADD CONSTRAINT FK_Status_ID FOREIGN KEY ([Status_ID])
-	REFERENCES [Status] ([Status_ID]);
-GO
 
 -- END
 
@@ -431,25 +414,6 @@ INSERT INTO [Genre]
 ([Description])
 VALUES
 ('Hip Hop');
-GO
-
--- Add Status VALUES
-INSERT INTO [Status]
-([Description])
-VALUES
-('Checked Out');
-GO
-
-INSERT INTO [Status]
-([Description])
-VALUES
-('In Storage');
-GO
-
-INSERT INTO [Status]
-([Description])
-VALUES
-('On Display');
 GO
 
 -- d.1
@@ -761,95 +725,95 @@ GO
 -- c.1
 
 exec sp_InsDisk
-'Ghost stories', '3/5/2000', 1, 2, 2;
+'Ghost stories', '3/5/2000', 1, 2;
 GO
 
 exec sp_InsDisk
-'Eye of the camera', '6/27/2000', 1, 3, 1;
+'Eye of the camera', '6/27/2000', 1, 3;
 GO
 
 exec sp_InsDisk
-'Bankrupcy', '7/25/2000', 1, 2, 1;
+'Bankrupcy', '7/25/2000', 1, 2;
 GO
 
 exec sp_InsDisk
-'Cat eat cat world', '1/8/2000', 1, 2, 2;
+'Cat eat cat world', '1/8/2000', 1, 2;
 GO
 
 exec sp_InsDisk
-'Down in flames', '9/18/2000', 1, 2, 2;
+'Down in flames', '9/18/2000', 1, 2;
 GO
 
 exec sp_InsDisk
-'from insult to injury', '6/26/2000', 1, 1, 1;
+'from insult to injury', '6/26/2000', 1, 1;
 GO
 
 exec sp_InsDisk
-'No discounts', '2/19/2000', 1, 2, 2;
+'No discounts', '2/19/2000', 1, 2;
 GO
 
 exec sp_InsDisk
-'Broken ice', '10/19/2000', 1, 1, 2;
+'Broken ice', '10/19/2000', 1, 1;
 GO
 
 exec sp_InsDisk
-'Curtain fall', '1/22/2000', 1, 2, 2;
+'Curtain fall', '1/22/2000', 1, 2;
 GO
 
 exec sp_InsDisk
-'Favoritism', '5/23/2000', 1, 2, 2;
+'Favoritism', '5/23/2000', 1, 2;
 GO
 
 exec sp_InsDisk
-'Basket case', '8/24/2000', 1, 3, 2;
+'Basket case', '8/24/2000', 1, 3;
 GO
 
 exec sp_InsDisk
-'Around the bush', '6/5/2000', 1, 2, 2;
+'Around the bush', '6/5/2000', 1, 2;
 GO
 
 exec sp_InsDisk
-'Bag of mysteries', '6/12/2000', 1, 3, 1;
+'Bag of mysteries', '6/12/2000', 1, 3;
 GO
 
 exec sp_InsDisk
-'Bursting out of my skin', '1/8/2000', 1, 3, 1;
+'Bursting out of my skin', '1/8/2000', 1, 3;
 GO
 
 exec sp_InsDisk
-'Final breath', '2/22/2000', 1, 1, 2;
+'Final breath', '2/22/2000', 1, 1;
 GO
 
 exec sp_InsDisk
-'Rocket surgery', '8/18/2000', 1, 1, 2;
+'Rocket surgery', '8/18/2000', 1, 1;
 GO
 
 exec sp_InsDisk
-'Total destruction', '12/20/2000', 1, 1, 2;
+'Total destruction', '12/20/2000', 1, 1;
 GO
 
 exec sp_InsDisk
-'Army of ants', '1/16/2000', 1, 2, 1;
+'Army of ants', '1/16/2000', 1, 2;
 GO
 
 exec sp_InsDisk
-'No celebration', '12/13/2000', 1, 3, 2;
+'No celebration', '12/13/2000', 1, 3;
 GO
 
 exec sp_InsDisk
-'Pushing up daisies', '8/11/2000', 1, 2, 2;
+'Pushing up daisies', '8/11/2000', 1, 2;
 GO
 
 exec sp_InsDisk
-'Bursting bubbles', '6/13/2000', 1, 1, 2;
+'Bursting bubbles', '6/13/2000', 1, 1;
 GO
 
 exec sp_InsDisk
-'Vital Hound', '7/13/2000', 1, 1, 2;
+'Vital Hound', '7/13/2000', 1, 1;
 GO
 
 exec sp_InsDisk
-'Corroded Pit', '7/13/2000', 1, 2, 2;
+'Corroded Pit', '7/13/2000', 1, 2;
 GO
 
 
@@ -1303,8 +1267,8 @@ GO
 --
 -- test disk procs
 declare @ident int;
-exec @ident = sp_InsDisk '5000 hours of rain', '01/01/2000', 1, 1, 1;
-exec sp_UpdateDisk @ident, '10,000 hours of rain', '01/01/2000', 1, 1, 2;
+exec @ident = sp_InsDisk '5000 hours of rain', '01/01/2000', 1, 1;
+exec sp_UpdateDisk @ident, '10,000 hours of rain', '01/01/2000', 1, 1;
 exec sp_DeleteDisk @ident;
 GO
 --
