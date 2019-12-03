@@ -7,45 +7,54 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace week2project {
+namespace week2project.LoggedIn {
     
     
-    public partial class Default {
+    public partial class CheckOut {
         
         /// <summary>
-        /// EditSummary control.
+        /// ddlBorrowers control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ValidationSummary EditSummary;
+        protected global::System.Web.UI.WebControls.DropDownList ddlBorrowers;
         
         /// <summary>
-        /// InsertSummary control.
+        /// CheckOutDataSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ValidationSummary InsertSummary;
+        protected global::System.Web.UI.WebControls.SqlDataSource CheckOutDataSource;
         
         /// <summary>
-        /// DiskListView control.
+        /// CheckOutDataSource2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView DiskListView;
+        protected global::System.Web.UI.WebControls.SqlDataSource CheckOutDataSource2;
         
         /// <summary>
-        /// MyDataSource control.
+        /// ddlDisks control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource MyDataSource;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDisks;
+        
+        /// <summary>
+        /// lblOutput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblOutput;
     }
 }

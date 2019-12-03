@@ -201,3 +201,4 @@ C:\Users\rthomas\Documents\GitHub\Disk_Inventory\week2project\week2project\obj\D
 C:\Users\rthomas\Documents\GitHub\Disk_Inventory\week2project\week2project\obj\Debug\week2project.csproj.CopyComplete
 C:\Users\rthomas\Documents\GitHub\Disk_Inventory\week2project\week2project\obj\Debug\week2project.dll
 C:\Users\rthomas\Documents\GitHub\Disk_Inventory\week2project\week2project\obj\Debug\week2project.pdb
+C:\Users\rthomas\Documents\GitHub\Disk_Inventory\week2project\week2project\obj\Debug\week2project.csprojAssemblyReference.cache

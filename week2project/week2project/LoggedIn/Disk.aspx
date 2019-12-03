@@ -59,14 +59,7 @@
 
 								<asp:TextBox ID="Type_IDTextBox" ValidationGroup="Edit" runat="server" Text='<%# Bind("Type_ID") %>' />
 								<br />
-								<label>
-									Status:
-								</label>
-								<br />
-
-								<asp:TextBox ID="Status_IDTextBox" ValidationGroup="Edit" runat="server" Text='<%# Bind("Status_ID") %>' />
-
-								<br />
+								
 								<asp:Button ID="UpdateButton"  ValidationGroup="Edit" runat="server" CommandName="Update" Text="Update" />
 								<asp:Button ID="CancelButton"  ValidationGroup="Edit" runat="server" CommandName="Cancel" Text="Cancel"  CausesValidation="false"/>
 								<br />
@@ -86,11 +79,6 @@
 								<asp:RequiredFieldValidator ID="RequiredFieldValidator4" ValidationGroup="Edit" Display="None" ControlToValidate="Type_IDTextBox" runat="server" ErrorMessage="Type Is A Required Field">
 								</asp:RequiredFieldValidator>
 								<asp:RangeValidator ID="RangeValidator2" runat="server" ErrorMessage="Genre must be Between 1 and 2" ValidationGroup="Edit" Display="None" ControlToValidate="Type_IDTextBox" Type="Integer" MinimumValue="1" MaximumValue="2">
-
-								</asp:RangeValidator>
-								<asp:RequiredFieldValidator ID="RequiredFieldValidator5" ValidationGroup="Edit" Display="None" ControlToValidate="Status_IDTextBox" runat="server" ErrorMessage="Status Is A Required Field">
-								</asp:RequiredFieldValidator>
-								<asp:RangeValidator ID="RangeValidator3" runat="server" ErrorMessage="Status must be Between 1 and 2" ValidationGroup="Edit" Display="None" ControlToValidate="Status_IDTextBox" Type="Integer" MinimumValue="1" MaximumValue="2">
 
 								</asp:RangeValidator>
 							</div>
@@ -141,11 +129,6 @@
 							</label>
 							<asp:TextBox ID="Type_IDTextBox" ValidationGroup="Insert" runat="server" Text='<%# Bind("Type_ID") %>' />
 							<br />
-							<label>
-								Status:
-							</label>
-							<asp:TextBox ID="Status_IDTextBox" ValidationGroup="Insert" runat="server" Text='<%# Bind("Status_ID") %>' />
-							<br />
 							<asp:Button ID="InsertButton" ValidationGroup="Insert" runat="server" CommandName="Insert" Text="Insert" />
 							<asp:Button ID="CancelButton" ValidationGroup="Insert" runat="server" CommandName="Cancel" Text="Clear" CausesValidation="false" />
 							<asp:RequiredFieldValidator ID="RequiredFieldValidator1" ValidationGroup="Insert" Display="None" ControlToValidate="NameTextBox" runat="server" ErrorMessage="Name Is A Required Field"></asp:RequiredFieldValidator>
@@ -166,11 +149,7 @@
 								<asp:RangeValidator ID="RangeValidator2" runat="server" ErrorMessage="Genre must be Between 1 and 2" ValidationGroup="Insert" Display="None" ControlToValidate="Type_IDTextBox" Type="Integer" MinimumValue="1" MaximumValue="2">
 
 								</asp:RangeValidator>
-								<asp:RequiredFieldValidator ID="RequiredFieldValidator5" ValidationGroup="Insert" Display="None" ControlToValidate="Status_IDTextBox" runat="server" ErrorMessage="Status Is A Required Field">
-								</asp:RequiredFieldValidator>
-								<asp:RangeValidator ID="RangeValidator3" runat="server" ErrorMessage="Status must be Between 1 and 2" ValidationGroup="Insert" Display="None" ControlToValidate="Status_IDTextBox" Type="Integer" MinimumValue="1" MaximumValue="2">
-
-								</asp:RangeValidator>
+								
 						</div>
 				</InsertItemTemplate>
 				<ItemTemplate>
@@ -200,10 +179,7 @@
 								</label>
 
 								<asp:Label ID="Type_IDLabel" runat="server" Text='<%# Eval("Type_ID") %>' />
-								<label>
-									Status:
-								</label>
-								<asp:Label ID="Status_IDLabel" runat="server" Text='<%# Eval("Status_ID") %>' />
+								
 								<br />
 								<asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete" />
 								<asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
@@ -244,9 +220,9 @@
 			<asp:SqlDataSource ID="MyDataSource" runat="server"
 				ConnectionString="<%$ ConnectionStrings:disk_inventoryRTConnectionString %>"
 				DeleteCommand="execute sp_DeleteDisk @Disk_ID"
-				InsertCommand="execute sp_InsDisk @Name, @ReleaseDate, @Type_ID, @Genre_ID, @Status_ID"
-				SelectCommand="SELECT [Disk_ID], [Name], [ReleaseDate], [Genre_ID], [Type_ID], [Status_ID] FROM [Disk] ORDER BY [Name]"
-				UpdateCommand="execute sp_UpdateDisk @Disk_ID, @Name, @ReleaseDate, @Type_ID, @Genre_ID, @Status_ID">
+				InsertCommand="execute sp_InsDisk @Name, @ReleaseDate, @Type_ID, @Genre_ID"
+				SelectCommand="SELECT [Disk_ID], [Name], [ReleaseDate], [Genre_ID], [Type_ID] FROM [Disk] ORDER BY [Name]"
+				UpdateCommand="execute sp_UpdateDisk @Disk_ID, @Name, @ReleaseDate, @Type_ID, @Genre_ID">
 				<DeleteParameters>
 					<asp:Parameter Name="Disk_ID" Type="Int32" />
 				</DeleteParameters>
@@ -255,14 +231,12 @@
 					<asp:Parameter DbType="DateTime2" Name="ReleaseDate" />
 					<asp:Parameter Name="Genre_ID" Type="Int32" />
 					<asp:Parameter Name="Type_ID" Type="Int32" />
-					<asp:Parameter Name="Status_ID" Type="Int32" />
 				</InsertParameters>
 				<UpdateParameters>
 					<asp:Parameter Name="Name" Type="String" />
 					<asp:Parameter DbType="DateTime2" Name="ReleaseDate" />
 					<asp:Parameter Name="Genre_ID" Type="Int32" />
 					<asp:Parameter Name="Type_ID" Type="Int32" />
-					<asp:Parameter Name="Status_ID" Type="Int32" />
 					<asp:Parameter Name="Disk_ID" Type="Int32" />
 				</UpdateParameters>
 			</asp:SqlDataSource>
