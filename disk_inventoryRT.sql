@@ -443,13 +443,7 @@ GO
 INSERT INTO [Status]
 ([Description])
 VALUES
-('In Storage');
-GO
-
-INSERT INTO [Status]
-([Description])
-VALUES
-('On Display');
+('Ready');
 GO
 
 -- d.1
@@ -1146,8 +1140,7 @@ VALUES
 (17, 17, '2/11/2019');
 GO
 
--- create checkout proc
-DROP PROC IF EXISTS sp_CheckoutDisk;
+-- create checkout procDROP PROC IF EXISTS sp_CheckoutDisk;
 GO
 
 Create Proc sp_CheckoutDisk
@@ -1167,6 +1160,10 @@ AS
 		   SELECT @returnDate = DATEADD(day, 14, @checkoutDate);
 		END
 
+		update Disk
+		set [Status_ID] = 1
+		where Disk_ID = @diskID;
+
 		insert into [dbo].[DiskHasBorrower]
 		([Disk_ID], [Borrower_ID], [Borrowed_Date], [Returned_Date])
 		VALUES
@@ -1180,6 +1177,40 @@ BEGIN CATCH
 END CATCH
 GO
 -- 
+-- return disk
+Create Proc sp_ReturnDisk
+	@diskID int,
+	@borrowerID int,
+	@returnDate datetime2 = null
+AS
+	BEGIN TRY
+		IF (@checkoutDate is null)
+		BEGIN
+		   SELECT @checkoutDate = GETDATE();
+		END
+
+		IF (@returnDate is null)
+		BEGIN
+		   SELECT @returnDate = DATEADD(day, 14, @checkoutDate);
+		END
+
+		update Disk
+		set [Status_ID] = 1
+		where Disk_ID = @diskID;
+
+		insert into [dbo].[DiskHasBorrower]
+		([Disk_ID], [Borrower_ID], [Borrowed_Date], [Returned_Date])
+		VALUES
+		(@diskID, @borrowerID, @checkoutDate, @returnDate);
+		RETURN @@IDENTITY;
+END TRY
+BEGIN CATCH
+	print 'an error occurred while calling sp_CheckoutDisk';
+	print 'ERROR NUMBER: ' + convert(varchar(512), ERROR_NUMBER());
+	print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
+END CATCH
+GO
+
 
 -- f.5
 -- no disk number 18 or 19
