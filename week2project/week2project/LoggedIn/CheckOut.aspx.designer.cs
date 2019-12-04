@@ -49,6 +49,33 @@ namespace week2project.LoggedIn {
         protected global::System.Web.UI.WebControls.DropDownList ddlDisks;
         
         /// <summary>
+        /// BorrowedCalendar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Calendar BorrowedCalendar;
+        
+        /// <summary>
+        /// BorrowerLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label BorrowerLabel;
+        
+        /// <summary>
+        /// submitButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button submitButton;
+        
+        /// <summary>
         /// lblOutput control.
         /// </summary>
         /// <remarks>

@@ -14,7 +14,8 @@ namespace week2project.LoggedIn
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-
+			BorrowedCalendar.SelectedDate = DateTime.Today;
+			BorrowedCalendar.TodaysDate = DateTime.Today;
 		}
 
 		protected void OnCheckout(object sender, EventArgs e)
@@ -23,13 +24,16 @@ namespace week2project.LoggedIn
 			{
 				int disk = Convert.ToInt32(ddlDisks.SelectedValue);
 				int borrower = Convert.ToInt32(ddlBorrowers.SelectedValue);
+				var date = BorrowedCalendar.SelectedDate.ToShortDateString();
 				var connection = new SqlConnection(CheckOutDataSource2.ConnectionString);
-				var command = new SqlCommand("exec sp_CheckoutDisk @diskID, @borrowerID", connection);
+				var command = new SqlCommand("exec sp_CheckoutDisk @diskID, @borrowerID, @borrowedDate", connection);
 
 				command.Parameters.Add("@diskID", SqlDbType.Int);
 				command.Parameters["@diskID"].Value = disk;
 				command.Parameters.Add("@borrowerID", SqlDbType.Int);
 				command.Parameters["@borrowerID"].Value = borrower;
+				command.Parameters.Add("@borrowedDate", SqlDbType.DateTime2);
+				command.Parameters["@borrowedDate"].Value = date;
 
 				connection.Open();
 				command.ExecuteNonQuery();
@@ -48,6 +52,22 @@ namespace week2project.LoggedIn
 				lblOutput.CssClass = "text-danger";
 				lblOutput.Text = $"An Error Has Occured During Checkout... ";
 				lblOutput.Visible = true;
+			}
+		}
+
+		protected void BorrowedCalendar_SelectionChanged(object sender, EventArgs e)
+		{
+			if(BorrowedCalendar.SelectedDate < DateTime.Today)
+			{
+				submitButton.Enabled = false;
+				BorrowerLabel.Visible = true;
+				BorrowerLabel.Text = "Date cannot be in the past";
+
+			}
+			else
+			{
+				submitButton.Enabled = true;
+				BorrowerLabel.Visible = false;
 			}
 		}
 	}

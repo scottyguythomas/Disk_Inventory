@@ -16,12 +16,11 @@
 		<div class="panel-body center-block">
 			<label>All Disks Are Due 2 Weeks From Checkout.</label>
 			<br />
-			<label>Reserving Disks Ahead Of Time Is Not Allowed.</label>
-			<br />
 
+			<label>Borrower:</label>
+			<br />
 			<asp:DropDownList ID="ddlBorrowers" runat="server" DataSourceID="CheckOutDataSource" DataTextField="Borrower_Name" DataValueField="Borrower_ID">
 			</asp:DropDownList>
-
 
 			<asp:SqlDataSource ID="CheckOutDataSource" runat="server"
 				ConnectionString="<%$ ConnectionStrings:disk_inventoryRTConnectionString %>"
@@ -30,7 +29,6 @@
 				FROM [Borrower]
 				ORDER BY Borrower_Name">
 			</asp:SqlDataSource>
-
 			<asp:SqlDataSource ID="CheckOutDataSource2" runat="server"
 				ConnectionString="<%$ ConnectionStrings:disk_inventoryRTConnectionString %>"
 				SelectCommand=
@@ -40,10 +38,20 @@
 				Disk.Status_ID = 2
 				order by Name">
 			</asp:SqlDataSource>
+			<br />
+			<br />
+
+			<label>Disk:</label>
+			<br />
 			<asp:DropDownList ID="ddlDisks" runat="server" DataSourceID="CheckOutDataSource2" DataTextField="Name" DataValueField="Disk_ID">
 			</asp:DropDownList>
 			<br />
-			<asp:Button Text="CheckOut Disk" OnClick="OnCheckout" runat="server" CssClass="btn btn-default" />
+			<br />
+			<label>Select Date To Borrow Disk</label>
+			<asp:Calendar ID="BorrowedCalendar" runat="server" OnSelectionChanged="BorrowedCalendar_SelectionChanged"></asp:Calendar>
+			<asp:Label ID="BorrowerLabel" CssClass="text-danger" Visible="false" Text="" runat="server" />
+			<br />
+			<asp:Button ID="submitButton" Text="Check Out Disk" OnClick="OnCheckout" runat="server" CssClass="btn btn-default" />
 			<br />
 			<asp:Label runat="server" ID="lblOutput" Visible="True"></asp:Label>
 		</div>
