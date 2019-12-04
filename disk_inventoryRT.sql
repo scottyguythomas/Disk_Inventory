@@ -1141,6 +1141,8 @@ VALUES
 GO
 
 -- create checkout procDROP PROC IF EXISTS sp_CheckoutDisk;
+
+DROP PROC IF EXISTS sp_CheckoutDisk;
 GO
 
 Create Proc sp_CheckoutDisk
@@ -1178,34 +1180,40 @@ END CATCH
 GO
 -- 
 -- return disk
+DROP PROC IF EXISTS sp_ReturnDisk;
+GO
+
 Create Proc sp_ReturnDisk
-	@diskID int,
-	@borrowerID int,
+	@transactionID int,
 	@returnDate datetime2 = null
 AS
 	BEGIN TRY
-		IF (@checkoutDate is null)
-		BEGIN
-		   SELECT @checkoutDate = GETDATE();
-		END
-
+		-- set the date if null
 		IF (@returnDate is null)
 		BEGIN
-		   SELECT @returnDate = DATEADD(day, 14, @checkoutDate);
+		   set @returnDate = GETDATE();
 		END
+		DECLARE @diskID int;
 
+		-- find the disk id through the transaction id
+		select @diskID = Disk_ID
+		from DiskHasBorrower
+		where Checkout_ID = @transactionID;
+
+		-- update the status to reflect the returned state
 		update Disk
-		set [Status_ID] = 1
+		set [Status_ID] = 2
 		where Disk_ID = @diskID;
 
-		insert into [dbo].[DiskHasBorrower]
-		([Disk_ID], [Borrower_ID], [Borrowed_Date], [Returned_Date])
-		VALUES
-		(@diskID, @borrowerID, @checkoutDate, @returnDate);
+		update [dbo].[DiskHasBorrower]
+		set Returned_Date = @returnDate
+		where CheckOut_ID = @transactionID;
+
+
 		RETURN @@IDENTITY;
 END TRY
 BEGIN CATCH
-	print 'an error occurred while calling sp_CheckoutDisk';
+	print 'an error occurred while calling sp_ReturnDisk';
 	print 'ERROR NUMBER: ' + convert(varchar(512), ERROR_NUMBER());
 	print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
 END CATCH
