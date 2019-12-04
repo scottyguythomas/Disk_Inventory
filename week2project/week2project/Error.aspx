@@ -11,7 +11,7 @@
         </div>
         <div class="panel-body">
 
-    <img src="Images/old-school.png" class="center-block" width="75%" />
+			<asp:Image runat="server" ImageUrl="~/Images/old-school.png" CssClass="center-block" Width="75%"/>
            <asp:Button CssClass="btn btn-primary center-block" runat="server" Text="Click Me To Go Back Home" PostBackUrl="~/Default.aspx" />
         </div>
     </div>
