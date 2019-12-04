@@ -287,7 +287,7 @@ Create Proc sp_InsDisk
 	@releaseDate datetime2,
 	@type int,
 	@genre int,
-	@status int
+	@status int = 2
 AS
 	BEGIN TRY
 		insert into [Disk]
@@ -313,16 +313,14 @@ Create Proc sp_UpdateDisk
 	@fname varchar(50),
 	@releaseDate datetime2,
 	@type int,
-	@genre int,
-	@status int
+	@genre int
 AS
 BEGIN TRY
 	update [Disk]
 	SET [Name] = @fname,
 		ReleaseDate = @releaseDate,
 		[Type_ID] = @type,
-		Genre_ID = @genre,
-		Status_ID =	@status
+		Genre_ID = @genre
 	WHERE Disk_ID = @diskID;
 END TRY
 BEGIN CATCH
@@ -1005,141 +1003,6 @@ VALUES
 (23, 22);
 GO
 
--- f.1
--- Add borrow history
-
--- f.4
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date], [Returned_Date])
-VALUES
-(1, 1, '2/11/2019', '2/18/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date], [Returned_Date])
-VALUES
-(1, 1, '2/18/2019', '2/15/2019');
-GO
-
---
-
--- f.6
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date], [Returned_Date])
-VALUES
-(2, 2, '2/20/2019', '3/1/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date], [Returned_Date])
-VALUES
-(2, 3, '4/1/2019', '4/2/2019');
-GO
-
--- 
-
--- f.8
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date], [Returned_Date])
-VALUES
-(3, 3, '1/10/2019', '1/20/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date], [Returned_Date])
-VALUES
-(4, 3, '1/20/2019', '1/25/2019');
-GO
-
-
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date], [Returned_Date])
-VALUES
-(4, 4, '1/20/2019', '1/25/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(5, 5, '10/15/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(6, 6, '5/23/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(7, 7, '6/15/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(8, 8, '8/21/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(9, 9, '7/2/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(10, 10, '3/14/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(11, 11, '4/12/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(12, 12, '9/15/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(13, 13, '1/1/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(14, 14, '2/9/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(15, 15, '2/24/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(16, 16, '8/24/2019');
-GO
-
-INSERT INTO [DiskHasBorrower]
-([Disk_ID], [Borrower_ID], [Borrowed_Date])
-VALUES
-(17, 17, '2/11/2019');
-GO
-
 -- create checkout procDROP PROC IF EXISTS sp_CheckoutDisk;
 
 DROP PROC IF EXISTS sp_CheckoutDisk;
@@ -1152,18 +1015,19 @@ Create Proc sp_CheckoutDisk
 	@returnDate datetime2 = null
 AS
 	BEGIN TRY
+		declare @statusID int = 1;
 		IF (@checkoutDate is null)
 		BEGIN
-		   SELECT @checkoutDate = GETDATE();
+		   set @checkoutDate = GETDATE();
 		END
 
-		IF (@returnDate is null)
+		IF (@returnDate is not null)
 		BEGIN
-		   SELECT @returnDate = DATEADD(day, 14, @checkoutDate);
+			set @statusID = 2;
 		END
 
 		update Disk
-		set [Status_ID] = 1
+		set [Status_ID] = @statusID
 		where Disk_ID = @diskID;
 
 		insert into [dbo].[DiskHasBorrower]
@@ -1178,6 +1042,34 @@ BEGIN CATCH
 	print 'ERROR MESSAGE: ' + convert(varchar(512), ERROR_MESSAGE());
 END CATCH
 GO
+
+-- f.1
+-- Add borrow history
+
+-- f.4
+
+exec sp_CheckoutDisk 1, 1, '2/11/2019', '2/18/2019';
+exec sp_CheckoutDisk 1, 1, '2/18/2019', '2/15/2019';
+exec sp_CheckoutDisk 2, 2, '2/20/2019', '3/1/2019';
+exec sp_CheckoutDisk 2, 3, '4/1/2019', '4/2/2019';
+exec sp_CheckoutDisk 3, 3, '1/10/2019', '1/20/2019';
+exec sp_CheckoutDisk 4, 3, '1/20/2019', '1/25/2019';
+exec sp_CheckoutDisk 4, 4, '1/20/2019', '1/25/2019';
+exec sp_CheckoutDisk 5, 5, '10/15/2019';
+exec sp_CheckoutDisk 6, 6, '5/23/2019';
+exec sp_CheckoutDisk 7, 7, '6/15/2019';
+exec sp_CheckoutDisk 8, 8, '8/21/2019';
+exec sp_CheckoutDisk 9, 9, '7/2/2019';
+exec sp_CheckoutDisk 10, 10, '3/14/2019';
+exec sp_CheckoutDisk 11, 11, '4/12/2019';
+exec sp_CheckoutDisk 12, 12, '9/15/2019';
+exec sp_CheckoutDisk 13, 13, '1/1/2019';
+exec sp_CheckoutDisk 14, 14, '2/9/2019';
+exec sp_CheckoutDisk 15, 15, '2/24/2019';
+exec sp_CheckoutDisk 16, 16, '8/24/2019';
+exec sp_CheckoutDisk 17, 17, '2/11/2019';
+go
+
 -- 
 -- return disk
 DROP PROC IF EXISTS sp_ReturnDisk;
@@ -1381,6 +1273,16 @@ exec @ident = sp_InsDisk '5000 hours of rain', '01/01/2000', 1, 1, 1;
 exec sp_UpdateDisk @ident, '10,000 hours of rain', '01/01/2000', 1, 1, 2;
 exec sp_DeleteDisk @ident;
 GO
+
+exec sp_adduser 'diskUserRT', 'diskUserRT';
+go
+
+GRANT EXECUTE TO diskUserRT;
+GRANT SELECT TO  diskUserRT;
+GRANT INSERT TO  diskUserRT;
+GRANT UPDATE TO  diskUserRT;
+GRANT DELETE TO  diskUserRT;
+go
 --
 
 -- tests
