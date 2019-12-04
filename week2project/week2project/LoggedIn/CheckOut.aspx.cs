@@ -35,14 +35,19 @@ namespace week2project.LoggedIn
 				command.ExecuteNonQuery();
 				connection.Close();
 
-				lblOutput.CssClass = "txt-success";
+				ddlBorrowers.DataBind();
+				ddlDisks.DataBind();
+
+				lblOutput.CssClass = "text-success";
 				lblOutput.Text = "Disk Checked Out Successfully!";
+				lblOutput.Visible = true;
 
 			}
 			catch (Exception)
 			{
-				lblOutput.CssClass = "txt-danger";
-				lblOutput.Text = "An Error Has Occured During Checkout... Please Try Again Later.";
+				lblOutput.CssClass = "text-danger";
+				lblOutput.Text = $"An Error Has Occured During Checkout... ";
+				lblOutput.Visible = true;
 			}
 		}
 	}

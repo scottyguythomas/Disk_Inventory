@@ -34,19 +34,18 @@
 			<asp:SqlDataSource ID="CheckOutDataSource2" runat="server"
 				ConnectionString="<%$ ConnectionStrings:disk_inventoryRTConnectionString %>"
 				SelectCommand=
-				"select Distinct DiskHasBorrower.Disk_ID, Disk.Name
-				from DiskHasBorrower
-				inner join Disk on Disk.Disk_ID = DiskHasBorrower.Disk_ID
+				"select Distinct Disk.Disk_ID, Disk.Name
+				from Disk
 				where
-				Returned_Date is not null or Borrowed_Date is null
+				Disk.Status_ID = 2
 				order by Name">
 			</asp:SqlDataSource>
 			<asp:DropDownList ID="ddlDisks" runat="server" DataSourceID="CheckOutDataSource2" DataTextField="Name" DataValueField="Disk_ID">
 			</asp:DropDownList>
 			<br />
-			<asp:Button Text="CheckOut Disk" OnClick="OnCheckout" runat="server" CssClass="btn btn-default" PostBackUrl="~/LoggedIn/CheckOut.aspx" />
+			<asp:Button Text="CheckOut Disk" OnClick="OnCheckout" runat="server" CssClass="btn btn-default" />
 			<br />
-			<asp:Label runat="server" ID="lblOutput" Visible="False"></asp:Label>
+			<asp:Label runat="server" ID="lblOutput" Visible="True"></asp:Label>
 		</div>
 	</div>
 </asp:Content>
