@@ -102,7 +102,7 @@
 							<asp:RequiredFieldValidator ValidationGroup="Insert" ID="RequiredFieldValidator3" runat="server" ErrorMessage="First Name Is A Required Field" Display="None" ControlToValidate="Artist_FNameTextBox"></asp:RequiredFieldValidator>
 							<asp:RequiredFieldValidator ID="RequiredFieldValidator4" ValidationGroup="Insert" ControlToValidate="Artist_TypeTextBox" runat="server" ErrorMessage="Is Artist Group Is A Required Field">
 
-								<asp:RangeValidator ID="RangeValidator2" runat="server" ValidationGroup="Insert" ControlToValidate="Artist_TypeTextBox" ErrorMessage="RangeValidator" Type="Integer" MaximumValue="1" MinimumValue="0" Display="None">
+								<asp:RangeValidator ID="RangeValidator2" runat="server" ValidationGroup="Insert" ControlToValidate="Artist_TypeTextBox" ErrorMessage="Artist Type But be either 1 or 0" Type="Integer" MaximumValue="1" MinimumValue="0" Display="None">
 
 								</asp:RangeValidator>
 							</asp:RequiredFieldValidator>
